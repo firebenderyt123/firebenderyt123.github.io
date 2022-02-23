@@ -3069,14 +3069,14 @@ h6 {
 
 #model,
 #model canvas {
-  width: 500px;
-  height: 500px;
+  width: 500px!important;
+  height: 500px!important;
 }
 @media (max-width: 499px) {
   #model,
   #model canvas {
-    width: 90vw;
-    height: 90vw;
+    width: 90vw!important;
+    height: 90vw!important;
   }
 }
 
