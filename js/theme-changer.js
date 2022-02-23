@@ -3,6 +3,10 @@ var darkTheme = "css/dark.css";
 
 $(window).load(function() {
   $(".loader").attr("style", "opacity: 0; transition: opacity .4s ease-in-out;");
+  setTimeout(function() 
+  {
+    $(".loader").attr("style", "display: none;");
+  }, 5000);
 });
 
 $(".theme-button").ready(function() {
