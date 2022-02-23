@@ -2975,7 +2975,7 @@ h6 {
   background-color: #373737;
 }
 
-.generic-banner container {
+.generic-banner .container {
   padding-top: 20px;
   padding-bottom: 10px;
 }
