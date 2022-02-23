@@ -6,7 +6,7 @@ $(window).load(function() {
   setTimeout(function() 
   {
     $(".loader").attr("style", "display: none;");
-  }, 5000);
+  }, 400);
 });
 
 $(".theme-button").ready(function() {
