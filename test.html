@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>three.js webgl - animation - keyframes</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		<link type="text/css" rel="stylesheet" href="main.css">
 		<style>
 			body {
 				background-color: #bfe3dd;
@@ -19,114 +17,116 @@
 
 	<body>
 
-		<div id="container"></div>
+		<div id="model"></div>
 
-		<div id="info">
-			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> webgl - animation - keyframes<br/>
-			Model: <a href="https://artstation.com/artwork/1AGwX" target="_blank" rel="noopener">Littlest Tokyo</a> by
-			<a href="https://artstation.com/glenatron" target="_blank" rel="noopener">Glen Fox</a>, CC Attribution.
-		</div>
+	<script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
 
-		<!-- Import maps polyfill -->
-		<!-- Remove this when import maps will be widely supported -->
-		<script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
-
-		<script type="importmap">
-			{
-				"imports": {
-					"three": "/three.js-master/build/three.module.js"
-				}
+	<script type="importmap">
+		{
+			"imports": {
+				"three": "/three.js-master/build/three.module.js"
 			}
-		</script>
+		}
+	</script>
 
-		<script type="module">
+	<script type="module">
 
-			import * as THREE from 'three';
+		import * as THREE from 'three';
 
-			import { OrbitControls } from '/three.js-master/examples/jsm/controls/OrbitControls.js';
-			import { RoomEnvironment } from '/three.js-master/examples/jsm/environments/RoomEnvironment.js';
+		//import Stats from './jsm/libs/stats.module.js';
 
-			import { GLTFLoader } from '/three.js-master/examples/jsm/loaders/GLTFLoader.js';
-			import { DRACOLoader } from '/three.js-master/examples/jsm/loaders/DRACOLoader.js';
+		import { OrbitControls } from '/three.js-master/examples/jsm/controls/OrbitControls.js';
+		import { RoomEnvironment } from '/three.js-master/examples/jsm/environments/RoomEnvironment.js';
 
-			let mixer;
+		import { GLTFLoader } from '/three.js-master/examples/jsm/loaders/GLTFLoader.js';
+		import { DRACOLoader } from '/three.js-master/examples/jsm/loaders/DRACOLoader.js';
 
-			const clock = new THREE.Clock();
-			const container = document.getElementById( 'container' );
+		let mixer;
+
+		const clock = new THREE.Clock();
+		const container = document.getElementById('model');
+
+		//const stats = new Stats();
+		//container.appendChild(stats.dom);
+
+		const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+		renderer.setClearColor(0x000000, 0);
+		renderer.setPixelRatio(window.devicePixelRatio);
+		renderer.setSize($(container).width(), $(container).height());
+		renderer.outputEncoding = THREE.sRGBEncoding;
+		container.appendChild(renderer.domElement);
+
+		const pmremGenerator = new THREE.PMREMGenerator(renderer);
+
+		const scene = new THREE.Scene();
+		//scene.background = new THREE.Color(0xbfe3dd);
+		scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
+
+		const camera = new THREE.PerspectiveCamera(40, $(container).width() / $(container).height(), 1, 100);
+		camera.position.set(5, 4, 10);
+
+		const controls = new OrbitControls(camera, renderer.domElement);
+		controls.target.set(0, 0.5, 0);
+		controls.update();
+		controls.enablePan = false;
+		controls.enableDamping = true;
+		controls.enableZoom = false;
+
+		controls.autoRotate = true;
+		controls.autoRotateSpeed = 2.0;
+
+		const dracoLoader = new DRACOLoader();
+		dracoLoader.setDecoderPath('/js/libs/draco/gltf/');
+
+		const loader = new GLTFLoader();
+		loader.setDRACOLoader( dracoLoader );
+		loader.load('/three.js-master/examples/models/gltf/LittlestTokyo.glb', function (gltf) {
+
+			const model = gltf.scene;
+			model.position.set(1, 1, 0);
+			model.scale.set(0.01, 0.01, 0.01);
+			scene.add(model);
+
+			mixer = new THREE.AnimationMixer(model);
+			mixer.clipAction(gltf.animations[0]).play();
+
+			animate();
+
+		}, undefined, function(e) {
+
+			console.error(e);
+
+		} );
 
 
-			const renderer = new THREE.WebGLRenderer( { antialias: true } );
-			renderer.setPixelRatio( window.devicePixelRatio );
-			renderer.setSize( window.innerWidth, window.innerHeight );
-			renderer.outputEncoding = THREE.sRGBEncoding;
-			container.appendChild( renderer.domElement );
+		window.onresize = function () {
 
-			const pmremGenerator = new THREE.PMREMGenerator( renderer );
+			camera.aspect = $(container).width() / $(container).height();
+			camera.updateProjectionMatrix();
 
-			const scene = new THREE.Scene();
-			scene.background = new THREE.Color( 0xbfe3dd );
-			scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), 0.04 ).texture;
+			renderer.setSize($(container).width(), $(container).height());
 
-			const camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 100 );
-			camera.position.set( 5, 2, 8 );
+		};
 
-			const controls = new OrbitControls( camera, renderer.domElement );
-			controls.target.set( 0, 0.5, 0 );
+
+		function animate() {
+
+			requestAnimationFrame(animate);
+
+			const delta = clock.getDelta();
+
+			mixer.update(delta);
+
 			controls.update();
-			controls.enablePan = false;
-			controls.enableDamping = true;
 
-			const dracoLoader = new DRACOLoader();
-			dracoLoader.setDecoderPath( 'js/libs/draco/gltf/' );
+			//stats.update();
 
-			const loader = new GLTFLoader();
-			loader.setDRACOLoader( dracoLoader );
-			loader.load( '/three.js-master/examples/models/gltf/LittlestTokyo.glb', function ( gltf ) {
+			renderer.render(scene, camera);
 
-				const model = gltf.scene;
-				model.position.set( 1, 1, 0 );
-				model.scale.set( 0.01, 0.01, 0.01 );
-				scene.add( model );
-
-				mixer = new THREE.AnimationMixer( model );
-				mixer.clipAction( gltf.animations[ 0 ] ).play();
-
-				animate();
-
-			}, undefined, function ( e ) {
-
-				console.error( e );
-
-			} );
+		}
 
 
-			window.onresize = function () {
-
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
-
-				renderer.setSize( window.innerWidth, window.innerHeight );
-
-			};
-
-
-			function animate() {
-
-				requestAnimationFrame( animate );
-
-				const delta = clock.getDelta();
-
-				mixer.update( delta );
-
-				controls.update();
-
-				renderer.render( scene, camera );
-
-			}
-
-
-		</script>
-
+	</script>
 	</body>
 
 </html>
