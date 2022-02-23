@@ -47,7 +47,7 @@
 		const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 		renderer.setClearColor(0x000000, 0);
 		renderer.setPixelRatio(window.devicePixelRatio);
-		renderer.setSize($(container).width(), $(container).height());
+		renderer.setSize(1280, 720);
 		renderer.outputEncoding = THREE.sRGBEncoding;
 		container.appendChild(renderer.domElement);
 
