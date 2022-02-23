@@ -16,6 +16,7 @@ $(".theme-button").ready(function() {
     $(".theme-button").find("img").attr("src","icons/dark.webp");
     $(link).attr('href', darkTheme);
   }
+  $(".loader").attr("style", "opacity: 0; transition: opacity .2s ease-in-out;");
 
 });
 
