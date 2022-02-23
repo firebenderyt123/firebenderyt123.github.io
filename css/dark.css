@@ -2975,6 +2975,11 @@ h6 {
   background-color: #373737;
 }
 
+.generic-banner container {
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+
 .generic-banner .height {
   height: 600px;
 }
