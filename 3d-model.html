@@ -62,7 +62,7 @@
 		//scene.background = new THREE.Color(0xbfe3dd);
 		scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
 
-		const camera = new THREE.PerspectiveCamera(40, $(container).width() / $(container).height(), 1, 100);
+		const camera = new THREE.PerspectiveCamera(40, 1280 / 720, 1, 100);
 		camera.position.set(5, 4, 10);
 
 		const controls = new OrbitControls(camera, renderer.domElement);
@@ -101,10 +101,10 @@
 
 		window.onresize = function () {
 
-			camera.aspect = $(container).width() / $(container).height();
+			camera.aspect = 1280 / 720;
 			camera.updateProjectionMatrix();
 
-			renderer.setSize($(container).width(), $(container).height());
+			renderer.setSize(1280, 720);
 
 		};
 
