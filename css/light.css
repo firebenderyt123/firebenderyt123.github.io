@@ -2968,6 +2968,11 @@ h6 {
   background-color: #fff;
 }
 
+.generic-banner container {
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+
 .generic-banner .height {
   height: 600px;
 }
