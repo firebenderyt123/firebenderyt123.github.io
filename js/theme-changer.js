@@ -1,6 +1,10 @@
 var lightTheme = "css/light.css";
 var darkTheme = "css/dark.css";
 
+$(window).load(function() {
+  $(".loader").attr("style", "opacity: 0; transition: opacity .4s ease-in-out;");
+});
+
 $(".theme-button").ready(function() {
   "use strict";
 
@@ -16,7 +20,6 @@ $(".theme-button").ready(function() {
     $(".theme-button").find("img").attr("src","icons/dark.webp");
     $(link).attr('href', darkTheme);
   }
-  $(".loader").attr("style", "opacity: 0; transition: opacity .2s ease-in-out;");
 
 });
 
