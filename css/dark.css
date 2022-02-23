@@ -3075,12 +3075,14 @@ h6 {
 
 
 
-#model {
+#model,
+#model canvas {
   width: 500px;
   height: 500px;
 }
 @media (max-width: 499px) {
-  #model {
+  #model,
+  #model canvas {
     width: 90vw;
     height: 90vw;
   }
