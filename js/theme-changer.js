@@ -1,5 +1,5 @@
-var lightTheme = "css/light.css";
-var darkTheme = "css/dark.css";
+var lightTheme = "css/light.min.css";
+var darkTheme = "css/dark.min.css";
 
 $(window).load(function() {
   $(".loader").attr("style", "opacity: 0; transition: opacity .4s ease-in-out;");
