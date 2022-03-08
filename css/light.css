@@ -2982,6 +2982,10 @@ h6 {
   background-color: #fff;
 }
 
+.generic-banner.relative {
+  padding-top: 58px;
+}
+
 .generic-banner .container {
   padding-top: 20px;
   padding-bottom: 10px;
