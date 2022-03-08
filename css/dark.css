@@ -2132,6 +2132,14 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+.img-fluid {
+  width: 55%;
+  margin-right: auto!important;
+  margin-left: auto!important;
+  display: block;
+  padding-top: 50px;
+}
+
 .section-gap {
   padding: 120px 0;
 }
